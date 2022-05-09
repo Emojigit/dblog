@@ -33,6 +33,7 @@ def mainpage(request):
     content = ["<p>{}</p><div id=\"postlist\">".format(settings.welcome)]
     for x in BlogPost.objects.all():
         content.append("<div class=\"post\"><h2 class=\"posttitle\"><a href=\"/{slug}/\">{title}</a></h2><p class=\"postdescription\">{description}</p></div>".format(slug=x.slug,title=x.title,description=x.description))
+    content.append("</div>")
     content = ''.join(content)
     render_dict = {
         "title": "Main Page",
