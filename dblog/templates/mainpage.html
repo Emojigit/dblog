@@ -1,0 +1,12 @@
+{% extends 'views.html' %}
+
+{% block bodycontent %}
+    <div id="postlist">
+    {% for x in posts %}
+        <div class="post">
+            <h2 class="posttitle"><a href="/{{ x.slug }}/">{{ x.title }}</a></h2>
+            <p class="postdescription">{% if x.description != "" %}{{ x.description }}{% else %}{{ x.content }}{% endif %}</p>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

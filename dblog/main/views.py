@@ -17,7 +17,8 @@ def post_get(request,slug: str):
             "blogpage": True,
             "og": True,
             "summary": b.description,
-            "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/" + slug
+            "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/" + slug,
+            "postid": b.id,
         }
         return render(request,"views.html",render_dict)
     else:
@@ -30,17 +31,20 @@ def post_get(request,slug: str):
 
 def mainpage(request):
     META = request.META
+    """
     content = ["<p>{}</p><div id=\"postlist\">".format(settings.welcome)]
     for x in BlogPost.objects.all():
         content.append("<div class=\"post\"><h2 class=\"posttitle\"><a href=\"/{slug}/\">{title}</a></h2><p class=\"postdescription\">{description}</p></div>".format(slug=x.slug,title=x.title,description=x.description))
     content = ''.join(content)
+    """
     render_dict = {
         "title": "Main Page",
-        "content": content,
+        "welcome": settings.welcome,
         "sitename": settings.site_name,
         "og": True,
         "summary": settings.welcome,
+        "posts": BlogPost.objects.all(),
         "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/"
     }
-    return render(request,"views.html",render_dict)
+    return render(request,"mainpage.html",render_dict)
 

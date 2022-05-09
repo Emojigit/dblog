@@ -15,11 +15,12 @@
 </head>
 <body>
     <div id="heading">
+        <div id="currentuser">Logged in: {{ user }}{% if user.is_staff %}<br /><a href="/admin/">Admin Panel</a>{% endif %}</div>
         <div id="breadcrumb">
             <a href="/" id="bc-home" class="bc">{{ sitename }}</a>
             <span class="bc">{{ title }}</span>
         </div>
-        <h1>{{ title }}</h1>
+        <h1>{{ title }}{% if blogpage %}{% if user.is_staff %}&nbsp;<a href="/admin/main/blogpost/{{ postid }}/change/">(EDIT)</a>{% endif %}{% endif %}</h1>
         {% if blogpage %}
             <div id="details">
                 <span id="created_at">Created at: {{ created_at }}</span>
@@ -27,7 +28,7 @@
             </div>
         {% endif %}
     </div>
-    <div id="bodycontent">{{ content | safe }}</div>
+    <div id="bodycontent">{% block bodycontent %}{{ content | safe }}{% endblock %}</div>
 </body>
 </html>
 
