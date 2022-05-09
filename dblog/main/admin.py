@@ -9,5 +9,6 @@ class BlogPostAdmin(admin.ModelAdmin):
     list_display_links = ('title', )
 
 admin.site.register(BlogPost,BlogPostAdmin)
+admin.site.register(Comment)
 
 admin.site.site_title = settings.site_name

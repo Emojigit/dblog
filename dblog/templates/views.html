@@ -22,13 +22,31 @@
         </div>
         <h1>{{ title }}{% if blogpage %}{% if user.is_staff %}&nbsp;<a href="/admin/main/blogpost/{{ postid }}/change/">(EDIT)</a>{% endif %}{% endif %}</h1>
         {% if blogpage %}
-            <div id="details">
+            <div class="details">
                 <span id="created_at">Created at: {{ created_at }}</span>
                 <span id="modify_at">Modify at: {{ modify_at }}</span>
             </div>
         {% endif %}
     </div>
     <div id="bodycontent">{% block bodycontent %}{{ content | safe }}{% endblock %}</div>
+    {% if blogpage %}
+        <div id="comments">
+            <h2 id="commentHeading">Comments</h2>
+            {% for x in comments %}
+                <div class="commentBlock">
+                    <div class="commentBody">
+                        <div class="details commentDetails">
+                            <span>By {{ x.by }}</span>
+                            <span>Commented at: {{ x.create_date }}</span>
+                        </div>
+                        <p class="commentBody">{{ x.content }}</p>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="commentBlock"><div class="commentBody"><p>Still no comments~</p></div></div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </body>
 </html>
 

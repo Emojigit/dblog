@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 import re
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -22,6 +23,14 @@ class BlogPost(models.Model):
     #render_template = BooleanField(default=True)
     create_date = models.DateTimeField(auto_now_add=True,editable=False)
     modify_date = models.DateTimeField(auto_now=True,editable=False)
+    def __str__(self):
+        return self.title
+
+class Comment(models.Model):
+    blogpost = models.ForeignKey(BlogPost,on_delete=models.CASCADE,help_text="Which BlogPost it belongs to")
+    by = models.ForeignKey(User,on_delete=models.CASCADE,help_text="Who replied")
+    content = models.TextField()
+    create_date = models.DateTimeField(auto_now_add=True,editable=False)
 
 # TODO: Enable Templates
 """

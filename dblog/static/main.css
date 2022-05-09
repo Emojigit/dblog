@@ -1,16 +1,21 @@
 :root {
   --bkg: #add8e6;
   --text: #000;
+  --a: unset;
+  --details: grey;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --bkg: #000;
         --text: #add8e6;
+        --a: lightblue;
+        --details: lightgrey;
     }
-    a {
-        color: lightblue;
-    }
+}
+
+a {
+    color: var(--a);
 }
 
 #heading, h2 {
@@ -27,12 +32,12 @@ body {
     background-color: var(--bkg);
 }
 
-#details, #breadcrumb {
+.details, #breadcrumb {
     font-size: smaller;
-    color: lightgrey;
+    color: var(--details);
 }
 
-#details span:not(:first-child)::before {
+.details span:not(:first-child)::before, .commentInfo span:not(:first-child)::before {
     content: "\00a0|\00a0";
     display: inline-block;
 }
@@ -50,4 +55,16 @@ body {
 #currentuser {
     float: right;
     margin-right: 5px;
+}
+
+.commentBlock {
+    border: 1px solid var(--text);
+}
+
+.commentBlock:not(:first-child) {
+    margin-top: 10px;
+}
+
+.commentBody {
+    margin: 5px;
 }

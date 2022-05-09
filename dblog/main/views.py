@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from main.models import *
 from main import settings
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -19,6 +20,7 @@ def post_get(request,slug: str):
             "summary": b.description,
             "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/" + slug,
             "postid": b.id,
+            "comments": Comment.objects.filter(blogpost=b)#.values()
         }
         return render(request,"views.html",render_dict)
     else:
