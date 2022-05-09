@@ -15,7 +15,7 @@
 </head>
 <body>
     <div id="heading">
-        <div id="currentuser">Logged in: {{ user }}{% if user.is_staff %}<br /><a href="/admin/">Admin Panel</a>{% endif %}</div>
+        <div id="currentuser">{% if user.username != "" %}Logged in: {{ user }}{% if user.is_staff %}<br /><a href="/admin/">Admin Panel</a>{% endif %}{% else %}Not logged in{% endif %}</div>
         <div id="breadcrumb">
             <a href="/" id="bc-home" class="bc">{{ sitename }}</a>
             <span class="bc">{{ title }}</span>
