@@ -32,6 +32,7 @@
     {% if blogpage %}
         <div id="comments">
             <h2 id="commentHeading">Comments</h2>
+            {% if commentmsg %}{{ commentmsg }}{% endif %}
             {% for x in comments %}
                 <div class="commentBlock">
                     <div class="commentBody">
@@ -42,9 +43,21 @@
                         <p class="commentBody">{{ x.content }}</p>
                     </div>
                 </div>
-            {% empty %}
-                <div class="commentBlock"><div class="commentBody"><p>Still no comments~</p></div></div>
             {% endfor %}
+            <div class="commentBlock">
+                <div class="commentBody">
+                    <p class="commentBody">
+                        {% if user.username != "" %}
+                            Leave a comment now!
+                            <form method="post">{% csrf_token %}
+                                <textarea id="content" name="content" required></textarea><br />
+                                <input type="submit" value="Submit" />
+                        {% else %}
+                            <a href="{% url 'login' %}">Login</a> or <a href="{% url 'register' %}">register</a> to leave comments!
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
         </div>
     {% endif %}
 </body>

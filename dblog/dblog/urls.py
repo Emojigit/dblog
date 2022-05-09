@@ -19,6 +19,8 @@ from main import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('<str:slug>/', views.post_get),
+    path('<str:slug>/', views.post),
     path('', views.mainpage),
+    path('/login/', views.placeholder,name="login"),
+    path('/register/', views.placeholder,name="register"),
 ]
