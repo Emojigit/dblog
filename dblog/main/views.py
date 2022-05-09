@@ -20,7 +20,7 @@ def post(request,slug: str):
             "sitename": settings.site_name,
             "blogpage": True,
             "og": True,
-            "summary": b.description,
+            "description": b.description,
             "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/" + slug,
             "postid": b.id,
             "status": 200
@@ -61,7 +61,7 @@ def mainpage(request):
         "welcome": settings.welcome,
         "sitename": settings.site_name,
         "og": True,
-        "summary": settings.welcome,
+        "description": settings.welcome,
         "posts": BlogPost.objects.all(),
         "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/"
     }
@@ -76,7 +76,7 @@ def login(request):
         "title": "Login",
         "sitename": settings.site_name,
         "og": True,
-        "summary": "Login to " + settings.site_name,
+        "description": "Login to " + settings.site_name,
         "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/login/",
     }
     return LoginView.as_view(template_name="login.html",extra_context=render_dict)(request)
@@ -93,7 +93,7 @@ def register(request):
             "title": "Register",
             "sitename": settings.site_name,
             "og": True,
-            "summary": "Register on " + settings.site_name,
+            "description": "Register on " + settings.site_name,
             "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/register/",
             "form": UserCreationForm(),
         }
