@@ -69,6 +69,7 @@ def mainpage(request):
 
 def placeholder(request):
     return HttpResponse("PLACEHOLDER", status=500)
+
 def login(request):
     META = request.META
     render_dict = {
