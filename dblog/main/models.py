@@ -17,7 +17,7 @@ def name_validate_alnum(value):
 class BlogPost(models.Model):
     title = models.CharField(max_length=50)
     slug = models.CharField(max_length=50,validators=[slug_validate_even],unique=True)
-    description = models.CharField(max_length=50,default="")
+    description = models.CharField(max_length=50,default="",blank=True)
     content = models.TextField()
     #render_template = BooleanField(default=True)
     create_date = models.DateTimeField(auto_now_add=True,editable=False)
