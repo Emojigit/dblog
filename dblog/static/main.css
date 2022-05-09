@@ -1,0 +1,48 @@
+:root {
+  --bkg: #add8e6;
+  --text: #000;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bkg: #000;
+        --text: #add8e6;
+    }
+    a {
+        color: lightblue;
+    }
+}
+
+#heading, h2 {
+    border-bottom: 1px solid var(--text);
+}
+
+#heading h1 {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+body {
+    color: var(--text);
+    background-color: var(--bkg);
+}
+
+#details, #breadcrumb {
+    font-size: smaller;
+    color: lightgrey;
+}
+
+#details span:not(:first-child)::before {
+    content: "\00a0|\00a0";
+    display: inline-block;
+}
+
+#breadcrumb .bc:not(:first-child)::before {
+    content: " >\00a0";
+    display: inline-block;
+}
+
+#postlist {
+    margin-left: 5px;
+    margin-right: 5px;
+}
