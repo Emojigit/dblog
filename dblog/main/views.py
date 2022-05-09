@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from main.models import *
 from main import settings
 from django.contrib.auth.models import User, AnonymousUser
 from django.http import HttpResponse
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
@@ -67,5 +69,41 @@ def mainpage(request):
 
 def placeholder(request):
     return HttpResponse("PLACEHOLDER", status=500)
+def login(request):
+    META = request.META
+    render_dict = {
+        "title": "Login",
+        "sitename": settings.site_name,
+        "og": True,
+        "summary": "Login to " + settings.site_name,
+        "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/login/",
+    }
+    return LoginView.as_view(template_name="login.html",extra_context=render_dict)(request)
+
+def register(request):
+    META = request.META
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        render_dict = {
+            "title": "Register",
+            "sitename": settings.site_name,
+            "og": True,
+            "summary": "Register on " + settings.site_name,
+            "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/register/",
+            "form": UserCreationForm(),
+        }
+        return render(request,"register.html",render_dict)
+
+def logout(request):
+    META = request.META
+    render_dict = {
+        "title": "Logout",
+        "sitename": settings.site_name,
+    }
+    return LogoutView.as_view(template_name="logout.html",extra_context=render_dict)(request)
 
 
