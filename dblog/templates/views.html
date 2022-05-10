@@ -34,11 +34,14 @@
             <h2 id="commentHeading">Comments</h2>
             {% if commentmsg %}{{ commentmsg }}{% endif %}
             {% for x in comments %}
-                <div class="commentBlock">
+                <div class="commentBlock" id="comment-{{ x.id }}">
                     <div class="commentBody">
                         <div class="details commentDetails">
                             <span>By {{ x.by }}</span>
                             <span>Commented at: {{ x.create_date }}</span>
+                            {% if x.replyto %}
+                                <span>In reply to <a href="#comment-{{ x.replyto.id }}">{{ x.replyto.by }}</a></span>
+                            {% endif %}
                         </div>
                         <p class="commentBody">{{ x.content }}</p>
                     </div>
@@ -50,6 +53,13 @@
                         {% if user.username != "" %}
                             Leave a comment now!
                             <form method="post">{% csrf_token %}
+                                <label for="replyto">(Optional) Reply to:</label>
+                                <select id="replyto" name="replyto">
+                                    <option value="0">---</option>
+                                    {% for x in comments %}
+                                        <option value="{{ x.id }}">{{ x.by }} at {{ x.create_date }}</option>
+                                    {% endfor %}
+                                </select><br />
                                 <textarea id="content" name="content" required></textarea><br />
                                 <input type="submit" value="Submit" />
                         {% else %}

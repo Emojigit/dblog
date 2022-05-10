@@ -34,10 +34,31 @@ def post(request,slug: str):
                     render_dict["commentmsg"] = "ERROR: Missing comment content!"
                     render_dict["status"] = 400
                 else:
-                    c = Comment.objects.create(by=request.user,blogpost=b,content=request.POST["content"])
-                    c.save()
                     render_dict["commentmsg"] = "Commented!"
-        render_dict["comments"] = Comment.objects.filter(blogpost=b)#.values()
+                    replyto = request.POST["replyto"] if "replyto" in request.POST else "0"
+                    replyto_apply = None
+                    if replyto != "0":
+                        try:
+                            replyto = int(replyto)
+                        except ValueError:
+                            render_dict["commentmsg"] = "ERROR: Replyto invalid! (Invalid Integer)"
+                            render_dict["status"] = 400
+                        else:
+                            if not Comment.objects.filter(id=replyto).exists():
+                                render_dict["commentmsg"] = "ERROR: Replyto invalid! (Not Found)"
+                                render_dict["status"] = 400
+                            else:
+                                replyto = Comment.objects.get(id=replyto)
+                                if replyto.blogpost != b:
+                                    render_dict["commentmsg"] = "ERROR: Replyto invalid! (BlogPost Invalid)"
+                                    render_dict["status"] = 400
+                                else:
+                                    render_dict["commentmsg"] = "Commented with reply!"
+                                    replyto_apply = replyto
+                    c = Comment.objects.create(by=request.user,blogpost=b,content=request.POST["content"],replyto=replyto_apply)
+                    c.save()
+
+        render_dict["comments"] = Comment.objects.filter(blogpost=b)
         return render(request,"views.html",render_dict,status=render_dict["status"])
     else:
         render_dict = {

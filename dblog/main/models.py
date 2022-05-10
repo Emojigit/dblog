@@ -28,6 +28,7 @@ class BlogPost(models.Model):
 
 class Comment(models.Model):
     blogpost = models.ForeignKey(BlogPost,on_delete=models.CASCADE,help_text="Which BlogPost it belongs to")
+    replyto = models.ForeignKey('Comment',on_delete=models.CASCADE,help_text="Replying to",null=True,default=None)
     by = models.ForeignKey(User,on_delete=models.CASCADE,help_text="Who replied")
     content = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True,editable=False)
