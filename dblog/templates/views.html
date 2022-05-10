@@ -41,9 +41,10 @@
                 <div class="commentBlock" id="comment-{{ x.id }}">
                     <div class="commentBody">
                         <div class="details commentDetailsRight">
-                            <span class="details_content">ID: {{ x.id }}</span><!--
-                            --><span class="details_content"><a class="replyClick" href="#comment-comment" replyto="{{ x.id }}">Reply</a></span>{% if user.is_staff %}<!--
-                                --><span class="details_content"><a href="/admin/main/comment/{{ x.id }}/change/">Manage</a></span>
+                            <span class="details_content">ID: {{ x.id }}</span>{% if user.username != "" %}<!--
+                                --><span class="details_content"><a class="replyClick" href="#comment-comment" replyto="{{ x.id }}">Reply</a></span>{% if user.is_staff %}<!--
+                                    --><span class="details_content"><a href="/admin/main/comment/{{ x.id }}/change/">Manage</a></span>
+                                {% endif %}
                             {% endif %}
                         </div>
                         <div class="details commentDetails">
