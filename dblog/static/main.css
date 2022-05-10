@@ -38,6 +38,7 @@ hr {
 body {
     color: var(--text);
     background-color: var(--bkg);
+    font-family: Verdana, sans-serif;
 }
 
 .details, #breadcrumb {
