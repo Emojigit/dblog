@@ -8,6 +8,15 @@ from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
+def P_404(request):
+    render_dict = {
+        "title": "404",
+        "content": "<p>Page not found. <a href=\"/\">Go back to main page</a></p>",
+        "sitename": settings.site_name,
+        "copyright": settings.copyright
+    }
+    return render(request,"views.html",render_dict,status=404)
+
 def post(request,slug: str):
     META = request.META
     if BlogPost.objects.filter(slug=slug).exists():
@@ -23,7 +32,8 @@ def post(request,slug: str):
             "description": b.description,
             "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/" + slug,
             "postid": b.id,
-            "status": 200
+            "status": 200,
+            "copyright": settings.copyright
         }
         if request.method == "POST":
             if isinstance(request.user,AnonymousUser):
@@ -61,12 +71,15 @@ def post(request,slug: str):
         render_dict["comments"] = Comment.objects.filter(blogpost=b)
         return render(request,"views.html",render_dict,status=render_dict["status"])
     else:
-        render_dict = {
-            "title": "404",
-            "content": "<p>Page not found. <a href=\"/\">Go back to main page</a></p>",
-            "sitename": settings.site_name,
-        }
-        return render(request,"views.html",render_dict,status=404)
+        return P_404(request)
+
+def by_id(request, id: int):
+    if BlogPost.objects.filter(id=id).exists():
+        b = BlogPost.objects.get(id=id)
+        return redirect("/" + b.slug + "/")
+    else:
+        return P_404(request)
+
 
 def mainpage(request):
     META = request.META
@@ -84,7 +97,8 @@ def mainpage(request):
         "og": True,
         "description": settings.welcome,
         "posts": BlogPost.objects.all(),
-        "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/"
+        "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/",
+        "copyright": settings.copyright
     }
     return render(request,"mainpage.html",render_dict)
 
@@ -99,6 +113,7 @@ def login(request):
         "og": True,
         "description": "Login to " + settings.site_name,
         "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/login/",
+        "copyright": settings.copyright
     }
     return LoginView.as_view(template_name="login.html",extra_context=render_dict)(request)
 
@@ -117,6 +132,7 @@ def register(request):
             "description": "Register on " + settings.site_name,
             "url": "http" + ("s" if META["SERVER_PORT"] == 443 else "") + "://" + META["SERVER_NAME"] + "/register/",
             "form": UserCreationForm(),
+            "copyright": settings.copyright
         }
         return render(request,"register.html",render_dict)
 
@@ -125,6 +141,7 @@ def logout(request):
     render_dict = {
         "title": "Logout",
         "sitename": settings.site_name,
+        "copyright": settings.copyright
     }
     return LogoutView.as_view(template_name="logout.html",extra_context=render_dict)(request)
 

@@ -14,12 +14,20 @@
     }
 }
 
+:root {
+    --hr: 1px solid var(--text);
+}
+
 a {
     color: var(--a);
 }
 
 #heading, h2 {
-    border-bottom: 1px solid var(--text);
+    border-bottom: var(--hr);
+}
+
+hr {
+    border-top: var(--hr);
 }
 
 #heading h1 {
@@ -96,4 +104,10 @@ textarea {
     font-size: smaller;
 }
 
+footer > div {
+    display: inline-block;
+}
 
+#footer_by_dblog {
+    float: right;
+}

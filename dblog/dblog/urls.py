@@ -23,5 +23,6 @@ urlpatterns = [
     path('register/', views.register,name="register"),
     path('logout/', views.logout,name="logout"),
     path('<str:slug>/', views.post),
+    path('i/<int:id>/', views.by_id),
     path('', views.mainpage),
 ]
