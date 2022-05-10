@@ -35,15 +35,20 @@ body {
 .details, #breadcrumb {
     font-size: smaller;
     color: var(--details);
+    white-space-collapse: discard;
 }
 
-.details span:not(:first-child)::before, .commentInfo span:not(:first-child)::before {
+.details > span:not(:last-child)::after {
     content: "\00a0|\00a0";
     display: inline-block;
 }
 
+#breadcrumb > .bc, .details_content {
+    display: inline-block;
+}
+
 #breadcrumb .bc:not(:first-child)::before {
-    content: " >\00a0";
+    content: "\00a0>\00a0";
     display: inline-block;
 }
 
@@ -65,7 +70,29 @@ body {
     margin-top: 10px;
 }
 
-.commentBody {
+.commentBody, .commentText {
     margin: 5px;
 }
+
+input, select, textarea {
+    background-color: var(--bkg);
+    color: var(--text);
+}
+
+textarea {
+    width: 400px;
+    height: 150px;
+    min-height: 100px;
+    max-width: 90%;
+}
+
+.commentDetailsRight {
+    float: right;
+    color: var(--details);
+}
+
+.small {
+    font-size: smaller;
+}
+
 

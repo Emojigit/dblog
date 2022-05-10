@@ -12,54 +12,63 @@
         <meta property="og:url" content="{{ url }}" />
     {% endif %}
     <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {% if blogpage %}
+        <script src="{% static 'blog.js' %}"></script>
+    {% endif %}
 </head>
 <body>
     <div id="heading">
         <div id="currentuser">{% if user.username != "" %}Logged in: {{ user }}<br />{% if user.is_staff %}<a href="/admin/">Admin</a> | {% endif %}<a href="{% url 'logout' %}">Logout</a>{% else %}Not logged in<br /><a href="{% url 'login' %}">Login</a> | <a href="{% url 'register' %}">Register</a>{% endif %}</div>
         <div id="breadcrumb">
-            <a href="/" id="bc-home" class="bc">{{ sitename }}</a>
-            <span class="bc">{{ title }}</span>
+            <a href="/" id="bc-home" class="bc">{{ sitename }}</a><!--
+            --><span class="bc">{{ title }}</span>
         </div>
-        <h1>{{ title }}{% if blogpage %}{% if user.is_staff %}&nbsp;<a href="/admin/main/blogpost/{{ postid }}/change/">(EDIT)</a>{% endif %}{% endif %}</h1>
+        <h1>{{ title }}{% if blogpage %}{% if user.is_staff %}&nbsp;<a class="small" href="/admin/main/blogpost/{{ postid }}/change/">(EDIT)</a>{% endif %}{% endif %}</h1>
         {% if blogpage %}
             <div class="details">
-                <span id="created_at">Created at: {{ created_at }}</span>
-                <span id="modify_at">Modify at: {{ modify_at }}</span>
+                <span id="created_at" class="details_content">Created at: {{ created_at }}</span><!--
+                --><span id="modify_at" class="details_content">Modify at: {{ modify_at }}</span>
             </div>
         {% endif %}
     </div>
     <div id="bodycontent">{% block bodycontent %}{{ content | safe }}{% endblock %}</div>
     {% if blogpage %}
         <div id="comments">
-            <h2 id="commentHeading">Comments</h2>
+            <h2 id="commentHeading">Comments{% if user.is_staff %} <a class="small" href="/admin/main/comment/?blogpost__id__exact={{ postid }}">(MANAGE)</a>{% endif %}</h2>
             {% if commentmsg %}{{ commentmsg }}{% endif %}
             {% for x in comments %}
                 <div class="commentBlock" id="comment-{{ x.id }}">
                     <div class="commentBody">
-                        <div class="details commentDetails">
-                            <span>By {{ x.by }}</span>
-                            <span>Commented at: {{ x.create_date }}</span>
-                            {% if x.replyto %}
-                                <span>In reply to <a href="#comment-{{ x.replyto.id }}">{{ x.replyto.by }}</a></span>
+                        <div class="details commentDetailsRight">
+                            <span class="details_content">ID: {{ x.id }}</span><!--
+                            --><span class="details_content"><a class="replyClick" href="#comment-comment" replyto="{{ x.id }}">Reply</a></span>{% if user.is_staff %}<!--
+                                --><span class="details_content"><a href="/admin/main/comment/{{ x.id }}/change/">Manage</a></span>
                             {% endif %}
                         </div>
-                        <p class="commentBody">{{ x.content }}</p>
+                        <div class="details commentDetails">
+                            <span class="details_content">By {{ x.by }}{% if x.by == user %} <span class="small">(you)</span>{% endif %}</span><!--
+                            --><span class="details_content">Commented at: {{ x.create_date }}</span>{% if x.replyto %}<!--
+                                --><span class="details_content">In reply to <a href="#comment-{{ x.replyto.id }}">{{ x.replyto.by }}</a></span>
+                            {% endif %}
+                        </div>
+                        <p class="commentText">{{ x.content }}</p>
                     </div>
                 </div>
             {% endfor %}
-            <div class="commentBlock">
+            <div class="commentBlock" id="comment-comment">
                 <div class="commentBody">
-                    <p class="commentBody">
+                    <p class="commentText">
                         {% if user.username != "" %}
                             Leave a comment now!
-                            <form method="post">{% csrf_token %}
+                            <form method="post" id="comment-form">{% csrf_token %}
                                 <label for="replyto">(Optional) Reply to:</label>
                                 <select id="replyto" name="replyto">
                                     <option value="0">---</option>
                                     {% for x in comments %}
-                                        <option value="{{ x.id }}">{{ x.by }} at {{ x.create_date }}</option>
+                                        <option value="{{ x.id }}">{{ x.by }} at {{ x.create_date }}, ID {{ x.id }}</option>
                                     {% endfor %}
-                                </select><br />
+                                </select> <button id="form-reply-goto" style="display: none;">GOTO</button><br />
                                 <textarea id="content" name="content" required></textarea><br />
                                 <input type="submit" value="Submit" />
                         {% else %}
