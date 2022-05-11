@@ -12,9 +12,6 @@
     {% endif %}
     <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    {% if blogpage %}
-        <script src="{% static 'blog.js' %}"></script>
-    {% endif %}
 </head>
 <body>
     <div id="heading">
@@ -87,6 +84,9 @@
         <div id="footer_copyright">{{ copyright }}</div>
         <div id="footer_by_dblog">powered by <a href="https://github.com/Emojigit/dblog/">dblog</a>, using <a href="https://www.djangoproject.com/">the Django framework</a>.</div>
     </footer>
+    {% if blogpage %}
+        <script src="{% static 'blog.js' %}"></script>
+    {% endif %}
 </body>
 </html>
 
