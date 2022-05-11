@@ -11,7 +11,9 @@
         <meta property="og:url" content="{{ url }}" />
     {% endif %}
     <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://ajax.googleapis.com/" crossorigin />
+    <link rel="dns-prefetch" href="https://ajax.googleapis.com/" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" async></script>
 </head>
 <body>
     <div id="heading">
@@ -85,7 +87,7 @@
         <div id="footer_by_dblog">powered by <a href="https://github.com/Emojigit/dblog/">dblog</a>, using <a href="https://www.djangoproject.com/">the Django framework</a>.</div>
     </footer>
     {% if blogpage %}
-        <script src="{% static 'blog.js' %}"></script>
+        <script src="{% static 'blog.js' %}" async></script>
     {% endif %}
 </body>
 </html>
