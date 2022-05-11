@@ -44,7 +44,6 @@ body {
 .details, #breadcrumb {
     font-size: smaller;
     color: var(--details);
-    white-space-collapse: discard;
 }
 
 .details > span:not(:last-child)::after {
