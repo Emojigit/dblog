@@ -96,6 +96,18 @@ textarea {
     max-width: 90%;
 }
 
+select#replyto {
+    min-width: 260px;
+    max-width: 90%;
+}
+
+@media screen and (max-width: 300px) {
+    select#replyto {
+        min-width: unset;
+        max-width: 90%;
+    }
+}
+
 .commentDetailsRight {
     float: right;
     color: var(--details);
