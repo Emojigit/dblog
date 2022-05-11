@@ -62,21 +62,23 @@
                     <p class="commentText">
                         {% if user.username != "" %}
                             Leave a comment now!
-                            <form method="post" id="comment-form">{% csrf_token %}
-                                <label for="replyto">(Optional) Reply to:</label>
-                                <select id="replyto" name="replyto">
-                                    <option value="0">---</option>
-                                    {% for x in comments %}
-                                        <option value="{{ x.id }}">{{ x.by }} at {{ x.create_date }}, ID {{ x.id }}</option>
-                                    {% endfor %}
-                                </select> <button id="form-reply-goto" style="display: none;">GOTO</button><br />
-                                <textarea id="content" name="content" required></textarea><br />
-                                <input type="submit" value="Submit" />
-                            </form>
                         {% else %}
                             <a href="{% url 'login' %}">Login</a> or <a href="{% url 'register' %}">register</a> to leave comments!
                         {% endif %}
                     </p>
+                    {% if user.username != "" %}
+                        <form method="post" id="comment-form">{% csrf_token %}
+                            <label for="replyto">(Optional) Reply to:</label>
+                            <select id="replyto" name="replyto">
+                                <option value="0">---</option>
+                                {% for x in comments %}
+                                    <option value="{{ x.id }}">{{ x.by }} at {{ x.create_date }}, ID {{ x.id }}</option>
+                                {% endfor %}
+                            </select> <button id="form-reply-goto" style="display: none;">GOTO</button><br />
+                            <textarea id="content" name="content" required></textarea><br />
+                            <input type="submit" value="Submit" />
+                        </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
